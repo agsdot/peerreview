@@ -1,4 +1,6 @@
 class AssignmentsController < ApplicationController
+  before_filter :redirect_to_root, :unless => :signed_in?, :only => [:new, :create, :update]
+
   # GET /assignments
   # GET /assignments.json
   def index
@@ -40,7 +42,9 @@ class AssignmentsController < ApplicationController
   # POST /assignments
   # POST /assignments.json
   def create
+
     @assignment = Assignment.new(params[:assignment])
+    @assignment.user = current_user
 
     respond_to do |format|
       if @assignment.save
@@ -80,4 +84,5 @@ class AssignmentsController < ApplicationController
       format.json { head :no_content }
     end
   end
+
 end
